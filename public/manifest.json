@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "StellarMask",
+  "description": "Brings Stellar to your browser",
+  "version": "0.0.1",
+
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "StellarMask"
+  },
+  "icons": {
+    "16": "logo-16.png",
+    "48": "logo-48.png",
+    "128": "logo-128.png"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "clipboardWrite"
+  ]
+}

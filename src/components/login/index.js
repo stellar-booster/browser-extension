@@ -1,87 +1,57 @@
 import React, {Component} from 'react';
-import {Keypair} from 'stellar-sdk';
+import {connect} from 'react-redux';
+import styled from 'styled-components';
+import {login, createAccount} from '../../actions/user';
 import server from '../../utils/stellar/server';
-import createTestAccount from '../../utils/stellar/create-test-account';
+import {Button, Input} from '../ui';
+import {H1, P} from '../../styles';
 
-class App extends Component {
+const Wrapper = styled.div`
+  opacity: ${props => props.loading ? 0.4 : 1};
+  pointer-events: ${props => props.loading ? 'none' : 'visible'};
+`;
+
+class Login extends Component {
   state = {
     useTestnet: true,
     secretKey: 'SDK7SL625ZUELSLRMD3AEK5HVMNI3FLCW7NLQLT45A6GWTYDP6AVD4CE',
-    account: null,
-    error: null,
-    loading: false,
   }
 
-  setServer(useTestnet) {
-    server.set(useTestnet);
-    this.setState({useTestnet});
+  login = () => {
+    const {secretKey, useTestnet} = this.state;
+    this.props.login(secretKey, useTestnet);
   }
 
-  async login() {
-    const {secretKey} = this.state;
-
-    if (!secretKey) {
-      return;
-    }
-
-    this.setState({loading: true});
-
-    let keypair = null;
-
-    try {
-      keypair = Keypair.fromSecret(secretKey);
-    } catch (e) {}
-
-    if (!keypair) {
-      this.setState({error: new Error('Invalid key'), loading: false});
-      return;
-    }
-
-    let account = null;
-    try {
-      account = await server.get().loadAccount(keypair.publicKey());
-    } catch (e) {}
-
-    if (!account) {
-      this.setState({error: new Error('Account not found'), loading: false});
-      return;
-    }
-
-    this.setState({account, error: null, loading: false});
+  createAccount = () => {
+    this.props.createAccount(this.state.useTestnet);
   }
 
-  async createTestAccount() {
-    let keypair = null;
+  onChangeTestNet = (event) => {
+    this.setState({
+      useTestnet: event.target.checked
+    });
+  }
 
-    this.setState({loading: true});
-
-    try {
-      keypair = await createTestAccount();
-    } catch (e) {}
-
-    if (!keypair) {
-      this.setState({error: new Error('Failed to create test account')});
-      return;
-    }
-
-    this.setState({secretKey: keypair.secret(), error: null, loading: false});
+  onChangeKey = (event) => {
+    this.setState({secretKey: event.target.value});
   }
 
   render() {
-    const {useTestnet, secretKey, account, error, loading} = this.state;
+    const {useTestnet, secretKey} = this.state;
+    const {account, error, loading} = this.props;
 
     return (
-      <div className="App" style={loading ? {opacity: 0.4, pointerEvents: 'none'} : {}}>
+      <Wrapper loading={loading}>
         <label>
           <span>Use Testnet ?</span>
-          <input type="checkbox" checked={useTestnet} onChange={event => this.setServer(event.target.checked)}/>
+          <Input type="checkbox" checked={useTestnet} onChange={this.onChangeTestNet}/>
         </label>
-        <h1 className="App-title">Login</h1>
+        <H1>Login</H1>
         {error && (
-          <p style={{color: 'red'}}>{error.message}</p>
+          <P error>{error.message}</P>
         )}
         {account ? (
-          <div className="App-intro">
+          <div>
             <a href={`${server.url()}accounts/${account.id}`} target="_blank">View on Stellar</a>
             {account.balances
               .reverse()
@@ -91,15 +61,22 @@ class App extends Component {
             {/* <pre>{JSON.stringify(account, null, 2)}</pre> */}
           </div>
         ) : (
-          <p className="App-intro">
-            <input value={secretKey} onChange={event => this.setState({secretKey: event.target.value})}/>
-            <button type="button" onClick={() => this.login()}>Go</button>
-          </p>
+          <P large>
+            <Input value={secretKey} onChange={this.onChangeKey}/>
+            <Button onClick={this.login}>Go</Button>
+          </P>
         )}
-        <button type="button" onClick={() => this.createTestAccount()}>Create test account</button>
-      </div>
+        <Button onClick={this.createAccount}>Create test account</Button>
+      </Wrapper>
     );
   }
 }
 
-export default App;
+export default connect(({ui, user}) => ({
+  loading: ui.get('loading'),
+  account: user.get('account'),
+  error: ui.get('error'),
+}), {
+  login,
+  createAccount
+})(Login);

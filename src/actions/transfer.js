@@ -15,7 +15,7 @@ export const transfer = (destination, amount, memo) => async (dispatch, getState
   }
 
   dispatch(loading(true));
-  dispatch(notify(true));
+  dispatch(notify(null));
 
   const secretKey = getState().user.get('secretKey');
 

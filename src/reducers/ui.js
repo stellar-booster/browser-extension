@@ -1,9 +1,10 @@
 import {Record} from 'immutable';
-import {LOADING, ERROR} from '../constants/action-types';
+import {LOADING, ERROR, NOTIFY} from '../constants/action-types';
 
 const initialState = new Record({
   loading: false,
   error: null,
+  notify: null,
 })();
 
 export default (state = initialState, action) => {
@@ -14,6 +15,9 @@ export default (state = initialState, action) => {
     case ERROR:
       return state
         .set('error', action.payload);
+    case NOTIFY:
+      return state
+        .set('notify', action.payload);
     default:
       return state;
   }

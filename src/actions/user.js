@@ -35,7 +35,10 @@ export const login = (secretKey, useTestnet = true) => async (dispatch) => {
   dispatch(error(null));
   dispatch({
     type: USER_LOGIN,
-    payload: {account}
+    payload: {
+      account,
+      secretKey
+    }
   });
 
 };

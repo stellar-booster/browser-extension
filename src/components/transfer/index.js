@@ -2,12 +2,18 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {P, H1} from '../../styles';
-import {Input, Button} from '../ui';
+import {Input, Button, View} from '../ui';
 import {transfer} from '../../actions/transfer';
 
-const Wrapper = styled.div`
-  opacity: ${props => props.loading ? 0.4 : 1};
-  pointer-events: ${props => props.loading ? 'none' : 'visible'};
+const InputBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  text-align: left;
+
+  label {
+    margin-bottom: 10px;
+  }
 `;
 
 class Transfer extends Component {
@@ -23,11 +29,16 @@ class Transfer extends Component {
     });
   }
 
+  onTransfer = () => {
+    const {publicKey, amount, memo} = this.state;
+    this.props.transfer(publicKey, amount, memo);
+  }
+
   render() {
     const {publicKey, amount, memo} = this.state;
     const {loading, error, notify} = this.props;
     return (
-      <Wrapper loading={loading}>
+      <View loading={loading}>
         <H1>Transfer Lumens</H1>
         {error && (
           <P error>{error.message}</P>
@@ -35,13 +46,22 @@ class Transfer extends Component {
         {notify && (
           <P>{notify}</P>
         )}
-        <P large>
-          <Input value={publicKey} data-value="publicKey" onChange={this.onChangeField}/>
-          <Input value={amount} data-value="amount" onChange={this.onChangeField}/>
-          <Input value={memo} data-value="memo" onChange={this.onChangeField}/>
-          <Button onClick={() => this.props.transfer(publicKey, amount, memo)}>Go</Button>
-        </P>
-      </Wrapper>
+        <div>
+          <InputBlock>
+            <label>Stellar Public Key</label>
+            <Input value={publicKey} data-value="publicKey" onChange={this.onChangeField}/>
+          </InputBlock>
+          <InputBlock>
+            <label>Amount</label>
+            <Input value={amount} data-value="amount" onChange={this.onChangeField}/>
+          </InputBlock>
+          <InputBlock>
+            <label>Memo</label>
+            <Input value={memo} data-value="memo" onChange={this.onChangeField}/>
+          </InputBlock>
+          <Button onClick={this.onTransfer}>Confirm</Button>
+        </div>
+      </View>
     );
   }
 }

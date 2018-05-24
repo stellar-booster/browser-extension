@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import styled from 'styled-components';
 import {login, createAccount} from '../../actions/user';
 import server from '../../utils/stellar/server';
-import {Button, Input} from '../ui';
+import {Button, Input, View} from '../ui';
 import {H1, P} from '../../styles';
-
-const Wrapper = styled.div`
-  opacity: ${props => props.loading ? 0.4 : 1};
-  pointer-events: ${props => props.loading ? 'none' : 'visible'};
-`;
 
 class Login extends Component {
   state = {
@@ -36,17 +30,25 @@ class Login extends Component {
     this.setState({secretKey: event.target.value});
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.secretKey) {
+      this.setState({
+        secretKey: nextProps.secretKey
+      });
+    }
+  }
+
   render() {
     const {useTestnet, secretKey} = this.state;
     const {account, error, loading} = this.props;
 
     return (
-      <Wrapper loading={loading}>
-        <label>
+      <View loading={loading}>
+        {!account && <label>
           <span>Use Testnet ?</span>
           <Input type="checkbox" checked={useTestnet} onChange={this.onChangeTestNet}/>
-        </label>
-        <H1>Login</H1>
+        </label>}
+        <H1>{account ? 'Dashboard' : 'Login'}</H1>
         {error && (
           <P error>{error.message}</P>
         )}
@@ -67,7 +69,7 @@ class Login extends Component {
           </P>
         )}
         <Button onClick={this.createAccount}>Create test account</Button>
-      </Wrapper>
+      </View>
     );
   }
 }
@@ -75,6 +77,7 @@ class Login extends Component {
 export default connect(({ui, user}) => ({
   loading: ui.get('loading'),
   account: user.get('account'),
+  secretKey: user.get('secretKey'),
   error: ui.get('error'),
 }), {
   login,

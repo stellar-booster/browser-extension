@@ -1,13 +1,14 @@
 import React from 'react';
-import {Route} from 'react-router';
+import {Route, Switch} from 'react-router';
 import Login from '../components/login';
 import Transfer from '../components/transfer';
+import PrivateRoute from '../components/private-route';
 
 const Routes = () => (
-  <div>
+  <Switch>
     <Route exact path="/" component={Login}/>
-    <Route path="/transfer" component={Transfer} />
-  </div>
+    <PrivateRoute path="/transfer" component={Transfer} />
+  </Switch>
 );
 
 export default Routes;

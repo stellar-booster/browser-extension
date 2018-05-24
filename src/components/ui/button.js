@@ -3,11 +3,12 @@ import styled, {css} from 'styled-components';
 
 const ButtonCSS = css`
   background-color: lightBlue;
-  padding: 11px;
+  padding: 11px 20px;
   border: 0;
   cursor: pointer;
   outline: none;
   border-radius: 4px;
+  font-size: 1.1rem;
   margin: 0 5px;
   min-width: 40px;
 `;

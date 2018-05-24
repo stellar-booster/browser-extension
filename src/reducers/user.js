@@ -15,6 +15,7 @@ export default (state = initialState, action) => {
     case USER_LOGOUT:
       return state
         .set('loggedIn', false)
+        .set('secretKey', null)
         .set('account', '');
 
     case USER_LOGIN:

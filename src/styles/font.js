@@ -6,6 +6,7 @@ export const title = css`
 
 export const H1 = styled.h1`
   ${title}
+  margin-bottom: 30px;
 `;
 
 export const textCenter = css`

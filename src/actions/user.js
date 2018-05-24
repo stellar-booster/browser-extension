@@ -71,7 +71,6 @@ export const createAccount = (useTestnet = true) => async (dispatch) => {
   dispatch(loading(false));
   dispatch(error(null));
 
-  console.log(keypair.publicKey());
   dispatch({
     type: USER_LOGIN,
     payload: {

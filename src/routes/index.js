@@ -6,7 +6,7 @@ import PrivateRoute from '../components/private-route';
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/" component={Login}/>
+    <Route exact path="/(index.html|)" component={Login}/>
     <PrivateRoute path="/transfer" component={Transfer} />
   </Switch>
 );

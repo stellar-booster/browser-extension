@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {logout} from '../../actions/user';
 import pushRouter from '../../actions/navigate';
 import {Button} from '../ui';
+import {DASHBOARD, TRANSFER} from '../../routes';
 
 const Wrapper = styled.div`
 
@@ -11,11 +12,11 @@ const Wrapper = styled.div`
 
 class Menu extends Component {
   onTransfer = () => {
-    this.props.pushRouter('/transfer');
+    this.props.pushRouter(TRANSFER);
   }
 
-  onLogin = () => {
-    this.props.pushRouter('/');
+  onDashboard = () => {
+    this.props.pushRouter(DASHBOARD);
   }
 
   onLogout = () => {
@@ -26,8 +27,8 @@ class Menu extends Component {
     const {loggedIn, location} = this.props;
     return (
       <Wrapper>
-        {loggedIn && (location.pathname !== '/transfer') && <Button onClick={this.onTransfer}>Transfer</Button>}
-        {loggedIn && (location && location.pathname !== '/') && <Button onClick={this.onLogin}>Dashboard</Button>}
+        {loggedIn && (location.pathname !== TRANSFER) && <Button onClick={this.onTransfer}>Transfer</Button>}
+        {loggedIn && (location.pathname !== DASHBOARD) && <Button onClick={this.onDashboard}>Dashboard</Button>}
         {loggedIn && <Button onClick={this.onLogout}>Logout</Button>}
       </Wrapper>
     );

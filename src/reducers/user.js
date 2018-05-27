@@ -5,7 +5,7 @@ import {
 } from '../constants/action-types';
 
 const initialState = new Record({
-  account: '',
+  account: {balances: []},
   loggedIn: false,
   secretKey: null,
 })();

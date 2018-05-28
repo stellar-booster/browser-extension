@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {login, createAccount} from '../../actions/user';
-import server from '../../utils/stellar/server';
+import {Redirect} from 'react-router';
+import {login, createTestnetAccount} from '../../actions/user';
 import {Button, Input, View} from '../ui';
 import {H1, P} from '../../styles';
+import {DASHBOARD} from '../../routes';
 
 class Login extends Component {
   state = {
@@ -16,8 +17,8 @@ class Login extends Component {
     this.props.login(secretKey, useTestnet);
   }
 
-  createAccount = () => {
-    this.props.createAccount(this.state.useTestnet);
+  createTestnetAccount = () => {
+    this.props.createTestnetAccount(this.state.useTestnet);
   }
 
   onChangeTestNet = (event) => {
@@ -40,35 +41,29 @@ class Login extends Component {
 
   render() {
     const {useTestnet, secretKey} = this.state;
-    const {account, error, loading} = this.props;
+    const {loggedIn, error, loading} = this.props;
+
+    if (loggedIn) {
+      return <Redirect to={DASHBOARD}/>;
+    }
 
     return (
       <View loading={loading}>
-        {!account && <label>
+        <label>
           <span>Use Testnet ?</span>
           <Input type="checkbox" checked={useTestnet} onChange={this.onChangeTestNet}/>
-        </label>}
-        <H1>{account ? 'Dashboard' : 'Login'}</H1>
+        </label>
+        <H1>Login</H1>
         {error && (
           <P error>{error.message}</P>
         )}
-        {account ? (
-          <div>
-            <a href={`${server.url()}accounts/${account.id}`} target="_blank">View on Stellar</a>
-            {account.balances
-              .reverse()
-              .map((b, i) => (
-                <p key={i}>{b.balance} {b.asset_type === 'native' ? 'XLM' : b.asset_code}</p>
-              ))}
-            {/* <pre>{JSON.stringify(account, null, 2)}</pre> */}
-          </div>
-        ) : (
-          <P large>
-            <Input value={secretKey} onChange={this.onChangeKey}/>
-            <Button onClick={this.login}>Go</Button>
-          </P>
+        <P large>
+          <Input value={secretKey} onChange={this.onChangeKey}/>
+          <Button onClick={this.login}>Go</Button>
+        </P>
+        {useTestnet && (
+          <Button onClick={this.createTestnetAccount}>Create testnet account</Button>
         )}
-        <Button onClick={this.createAccount}>Create test account</Button>
       </View>
     );
   }
@@ -76,10 +71,10 @@ class Login extends Component {
 
 export default connect(({ui, user}) => ({
   loading: ui.get('loading'),
-  account: user.get('account'),
+  loggedIn: user.get('loggedIn'),
   secretKey: user.get('secretKey'),
   error: ui.get('error'),
 }), {
   login,
-  createAccount
+  createTestnetAccount
 })(Login);

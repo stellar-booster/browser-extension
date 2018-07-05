@@ -1,17 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import createStore from '../../store';
-import Transfer from './';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import createStore from '../../store'
+import Transfer from '.'
 
 describe('Transfer', () => {
   it('renders without crashing', () => {
-    const div = document.createElement('div');
+    const div = document.createElement('div')
     ReactDOM.render((
       <Provider store={createStore({})}>
-        <Transfer/>
+        <Transfer />
       </Provider>
-    ), div);
-    ReactDOM.unmountComponentAtNode(div);
-  });
-});
+    ), div)
+    ReactDOM.unmountComponentAtNode(div)
+  })
+})

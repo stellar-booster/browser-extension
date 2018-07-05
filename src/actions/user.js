@@ -1,76 +1,75 @@
-import {Keypair} from 'stellar-sdk';
-import {loading, error} from './ui';
-import pushRouter from './navigate';
-import {USER_LOGIN, USER_LOGOUT} from '../constants/action-types';
-import testnetAccount from '../utils/stellar/testnet-account';
-import server from '../utils/stellar/server';
+import { Keypair } from 'stellar-sdk'
+import { loading, error } from './ui'
+import pushRouter from './navigate'
+import { USER_LOGIN, USER_LOGOUT } from '../constants/action-types'
+import testnetAccount from '../utils/stellar/testnet-account'
+import server from '../utils/stellar/server'
 
 export const login = (secretKey, useTestnet = true) => async (dispatch) => {
-  dispatch(loading(true));
-  server.set(useTestnet);
+  dispatch(loading(true))
+  server.set(useTestnet)
 
-  let keypair;
+  let keypair
 
   try {
-    keypair = Keypair.fromSecret(secretKey);
+    keypair = Keypair.fromSecret(secretKey)
   } catch (e) {}
 
   if (!keypair) {
-    dispatch(loading(false));
-    dispatch(error(new Error('Invalid key')));
-    return;
+    dispatch(loading(false))
+    dispatch(error(new Error('Invalid key')))
+    return
   }
 
-  let account = null;
+  let account = null
   try {
-    account = await server.get().loadAccount(keypair.publicKey());
+    account = await server.get().loadAccount(keypair.publicKey())
   } catch (e) {}
 
   if (!account) {
-    dispatch(loading(false));
-    dispatch(error(new Error('Account not found')));
-    return;
+    dispatch(loading(false))
+    dispatch(error(new Error('Account not found')))
+    return
   }
 
-  dispatch(loading(false));
-  dispatch(error(null));
+  dispatch(loading(false))
+  dispatch(error(null))
   dispatch({
     type: USER_LOGIN,
     payload: {
       account,
       secretKey
     }
-  });
+  })
+}
 
-};
-
-export const logout = () => dispatch => {
+export const logout = () => (dispatch) => {
   dispatch({
     type: USER_LOGOUT
-  });
+  })
 
-  dispatch(pushRouter('/'));
-};
+  dispatch(pushRouter('/'))
+}
 
 export const createTestnetAccount = () => async (dispatch) => {
-  let keypair;
+  let keypair
 
-  dispatch(loading(true));
+  dispatch(loading(true))
 
   try {
-    keypair = await testnetAccount();
+    keypair = await testnetAccount()
   } catch (e) {}
 
   if (!keypair) {
-    dispatch(loading(false));
-    dispatch(error(new Error('Failed to create testnet account')));
-    return;
+    dispatch(loading(false))
+    dispatch(error(new Error('Failed to create testnet account')))
+    return
   }
 
-  const account = await server.get().loadAccount(keypair.publicKey());
+  const account = await server.get().loadAccount(keypair.publicKey())
 
-  dispatch(loading(false));
-  dispatch(error(null));
+  dispatch(loading(false))
+  dispatch(error(null))
 
   dispatch({
     type: USER_LOGIN,
@@ -78,5 +77,5 @@ export const createTestnetAccount = () => async (dispatch) => {
       secretKey: keypair.secret(),
       account
     }
-  });
-};
+  })
+}

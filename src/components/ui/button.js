@@ -1,5 +1,5 @@
-import React, {Fragment} from 'react';
-import styled, {css} from 'styled-components';
+import React, { Fragment } from 'react'
+import styled, { css } from 'styled-components'
 
 const ButtonCSS = css`
   background-color: lightBlue;
@@ -11,14 +11,22 @@ const ButtonCSS = css`
   font-size: 1.1rem;
   margin: 0 5px;
   min-width: 40px;
-`;
+`
 
-const WrapperA = styled.a`${ButtonCSS}`;
-const WrapperButton = styled.button`${ButtonCSS}`;
+const WrapperA = styled.a`${ButtonCSS}`
+const WrapperButton = styled.button`${ButtonCSS}`
 
-export const Button = ({children, ...props}) => (
+export const Button = ({ children, ...props }) => (
   <Fragment>
-    {!props.href && <WrapperButton type="button" {...props}>{children}</WrapperButton>}
-    {props.href && <WrapperA {...props}>{children}</WrapperA>}
+    {!props.href && (
+      <WrapperButton type='button' {...props}>
+        {children}
+      </WrapperButton>
+    )}
+    {props.href && (
+      <WrapperA {...props}>
+        {children}
+      </WrapperA>
+    )}
   </Fragment>
-);
+)

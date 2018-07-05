@@ -1,7 +1,7 @@
-import {push} from 'react-router-redux';
+import { push } from 'react-router-redux'
 
-const navigate = (url) => (dispatch) => {
-  dispatch(push(url));
-};
+const navigate = url => (dispatch) => {
+  dispatch(push(url))
+}
 
-export default navigate;
+export default navigate

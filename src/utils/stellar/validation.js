@@ -1,11 +1,11 @@
-import {Keypair} from 'stellar-sdk';
+import { Keypair } from 'stellar-sdk'
 
-export const isValidPublicKey = key => {
-  let valid = true;
+export const isValidPublicKey = (key) => {
+  let valid = true
   try {
-    Keypair.fromPublicKey(key);
+    Keypair.fromPublicKey(key)
   } catch (e) {
-    valid = false;
+    valid = false
   }
-  return valid;
-};
+  return valid
+}

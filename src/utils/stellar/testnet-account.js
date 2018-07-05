@@ -1,9 +1,9 @@
-import {Keypair} from 'stellar-sdk';
+import { Keypair } from 'stellar-sdk'
 
 export default () => {
-  const keypair = Keypair.random();
+  const keypair = Keypair.random()
 
-  const url = `https://horizon-testnet.stellar.org/friendbot?addr=${keypair.publicKey()}`;
+  const url = `https://horizon-testnet.stellar.org/friendbot?addr=${keypair.publicKey()}`
 
-  return fetch(url).then(() => keypair);
-};
+  return fetch(url).then(() => keypair)
+}

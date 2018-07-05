@@ -1,15 +1,15 @@
-import {compose, createStore, applyMiddleware} from 'redux';
-import {routerMiddleware} from 'react-router-redux';
-import thunk from 'redux-thunk';
-import reducers from '../reducers';
+import { compose, createStore, applyMiddleware } from 'redux'
+import { routerMiddleware } from 'react-router-redux'
+import thunk from 'redux-thunk'
+import reducers from '../reducers'
 
 export default function (initialState = {}, history) {
   const middlewares = [
     thunk,
     routerMiddleware(history)
-  ];
+  ]
 
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
   // const isProduction = process.env.NODE_ENV === 'production';
   //
@@ -29,8 +29,8 @@ export default function (initialState = {}, history) {
     reducers,
     initialState,
     composeEnhancers(
-      applyMiddleware(...middlewares),
+      applyMiddleware(...middlewares)
       // DevTools.instrument()
     )
-  );
+  )
 }

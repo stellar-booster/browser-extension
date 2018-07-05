@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import styled from 'styled-components';
-import {P, H1} from '../../styles';
-import {Input, Button, View} from '../ui';
-import {transfer} from '../../actions/transfer';
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import styled from 'styled-components'
+import {P, H1} from '../../styles'
+import {Input, Button, View} from '../ui'
+import {transfer} from '../../actions/transfer'
 
 const InputBlock = styled.div`
   display: flex;
@@ -14,7 +14,7 @@ const InputBlock = styled.div`
   label {
     margin-bottom: 10px;
   }
-`;
+`
 
 class Transfer extends Component {
   state = {
@@ -26,17 +26,17 @@ class Transfer extends Component {
   onChangeField = (event) => {
     this.setState({
       [event.target.dataset.value]: event.target.value
-    });
+    })
   }
 
   onTransfer = () => {
-    const {publicKey, amount, memo} = this.state;
-    this.props.transfer(publicKey, amount, memo);
+    const {publicKey, amount, memo} = this.state
+    this.props.transfer(publicKey, amount, memo)
   }
 
-  render() {
-    const {publicKey, amount, memo} = this.state;
-    const {loading, error, notify} = this.props;
+  render () {
+    const {publicKey, amount, memo} = this.state
+    const {loading, error, notify} = this.props
     return (
       <View loading={loading}>
         <H1>Transfer Lumens</H1>
@@ -49,27 +49,27 @@ class Transfer extends Component {
         <div>
           <InputBlock>
             <label>Stellar Public Key</label>
-            <Input value={publicKey} data-value="publicKey" onChange={this.onChangeField}/>
+            <Input value={publicKey} data-value='publicKey' onChange={this.onChangeField} />
           </InputBlock>
           <InputBlock>
             <label>Amount</label>
-            <Input value={amount} data-value="amount" onChange={this.onChangeField}/>
+            <Input value={amount} data-value='amount' onChange={this.onChangeField} />
           </InputBlock>
           <InputBlock>
             <label>Memo</label>
-            <Input value={memo} data-value="memo" onChange={this.onChangeField}/>
+            <Input value={memo} data-value='memo' onChange={this.onChangeField} />
           </InputBlock>
           <Button onClick={this.onTransfer}>Confirm</Button>
         </div>
       </View>
-    );
+    )
   }
 }
 
 export default connect(({ui}) => ({
   loading: ui.get('loading'),
   error: ui.get('error'),
-  notify: ui.get('notify'),
+  notify: ui.get('notify')
 }), {
   transfer
-})(Transfer);
+})(Transfer)

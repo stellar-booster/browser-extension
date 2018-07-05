@@ -1,14 +1,14 @@
-import {Record} from 'immutable';
+import { Record } from 'immutable'
 import {
   USER_LOGIN,
-  USER_LOGOUT,
-} from '../constants/action-types';
+  USER_LOGOUT
+} from '../constants/action-types'
 
 const initialState = new Record({
-  account: {balances: []},
+  account: { balances: [] },
   loggedIn: false,
-  secretKey: null,
-})();
+  secretKey: null
+})()
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -16,15 +16,15 @@ export default (state = initialState, action) => {
       return state
         .set('loggedIn', false)
         .set('secretKey', null)
-        .set('account', '');
+        .set('account', '')
 
     case USER_LOGIN:
       return state
         .set('loggedIn', true)
         .set('secretKey', action.payload.secretKey || state.get('secretKey'))
-        .set('account', action.payload.account);
+        .set('account', action.payload.account)
 
     default:
-      return state;
+      return state
   }
-};
+}

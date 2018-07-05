@@ -1,5 +1,7 @@
-import {Asset, Keypair, Memo, Operation, TransactionBuilder} from 'stellar-sdk';
-import {getServer} from './server';
+import {
+  Asset, Keypair, Memo, Operation, TransactionBuilder
+} from 'stellar-sdk'
+import { getServer } from './server'
 
 export default async (
   destination,
@@ -8,10 +10,9 @@ export default async (
   memo = '',
   asset = Asset.native()
 ) => {
+  const keypair = Keypair.fromSecret(secretKey)
 
-  const keypair = Keypair.fromSecret(secretKey);
-
-  const account = await getServer().loadAccount(keypair.publicKey());
+  const account = await getServer().loadAccount(keypair.publicKey())
 
   const transaction = new TransactionBuilder(account)
     .addOperation(Operation.payment({
@@ -20,9 +21,9 @@ export default async (
       amount
     }))
     .addMemo(Memo.text(memo))
-    .build();
+    .build()
 
-  transaction.sign(keypair);
+  transaction.sign(keypair)
 
-  return getServer().submitTransaction(transaction);
-};
+  return getServer().submitTransaction(transaction)
+}

@@ -1,19 +1,19 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components'
 
 export const title = css`
   font-size: 1.5rem;
-`;
+`
 
 export const H1 = styled.h1`
   ${title}
   margin-bottom: 30px;
-`;
+`
 
 export const textCenter = css`
   text-align: center;
-`;
+`
 
 export const P = styled.p`
-  color: ${props => props.error ? 'red' : 'black'};
-  font-size: ${props => props.large ? 'large' : 'medium'};
-`;
+  color: ${props => (props.error ? 'red' : 'black')};
+  font-size: ${props => (props.large ? 'large' : 'medium')};
+`
